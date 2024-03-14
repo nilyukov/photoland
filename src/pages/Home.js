@@ -1,8 +1,12 @@
+import Hero from '../sections/Hero';
+import LatestProducts from '../sections/LatestProducts';
+
 const Home = () => {
     return (
-        <div>
-            <h1>Home</h1>
-        </div>
+        <main>
+            <Hero />
+            <LatestProducts />
+        </main>
     );
 };
 

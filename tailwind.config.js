@@ -26,7 +26,7 @@ module.exports = {
                 }
             },
             backgroundImage: {
-                mainSlider: "url('img/mainSlider_bg.png')"
+                mainSlider: "url('assets/images/mainSlider_bg.png')"
             },
             keyframes: {
                 shake: {
