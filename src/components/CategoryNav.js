@@ -10,7 +10,7 @@ const CategoryNav = () => {
                 <div className="bg-accent py-4 text-primary text-center uppercase font-semibold">
                     Browse Categories
                 </div>
-                <div className="flex flex-col gap-y-6 p-6">
+                <nav className="flex flex-col gap-y-6 p-6">
                     {data?.map((category) => (
                         <Link
                             key={category.id}
@@ -19,7 +19,7 @@ const CategoryNav = () => {
                             {category.attributes.title}
                         </Link>
                     ))}
-                </div>
+                </nav>
             </div>
         </aside>
     );
