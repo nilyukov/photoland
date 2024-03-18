@@ -2,8 +2,11 @@ import { useParams } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 
 import RelatedProducts from '../sections/RelatedProducts';
+import { useContext } from 'react';
+import { CartContext } from '../context/CartContext';
 
 const ProductDetails = () => {
+    const { addToCart } = useContext(CartContext);
     const { id } = useParams();
     const { data } = useFetch(`/products?populate=*&filters[id][$eq]=${id}`);
 
@@ -32,7 +35,9 @@ const ProductDetails = () => {
                             <div className="text-3xl text-accent font-semibold">
                                 ${data[0].attributes.price}
                             </div>
-                            <button className="btn btn-accent">Add to cart</button>
+                            <button onClick={() => addToCart(data[0])} className="btn btn-accent">
+                                Add to cart
+                            </button>
                         </div>
                     </div>
                 </div>
