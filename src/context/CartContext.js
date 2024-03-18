@@ -2,6 +2,15 @@ import PropTypes from 'prop-types';
 import { createContext, useEffect, useState } from 'react';
 
 export const CartContext = createContext();
+
+const calculateTotal = (cart) => {
+    return cart.reduce((total, item) => total + item.attributes.price * item.amount, 0);
+};
+
+const calculateAmount = (cart) => {
+    return cart.reduce((total, item) => total + item.amount, 0);
+};
+
 const CartProvider = ({ children }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [cart, setCart] = useState([]);
@@ -10,16 +19,9 @@ const CartProvider = ({ children }) => {
     const [total, setTotal] = useState(0);
 
     useEffect(() => {
-        const amount = cart.reduce((a, c) => a + c.amount, 0);
-        setAmount(amount);
-        if (amount === 0) {
-            setIsOpen(false);
-        }
-    }, [cart]);
-
-    useEffect(() => {
-        const total = cart.reduce((a, c) => a + c.attributes.price * c.amount, 0);
-        setTotal(total);
+        setTotal(calculateTotal(cart));
+        setAmount(calculateAmount(cart));
+        setItemsAmount(cart.length);
     }, [cart]);
 
     const addToCart = (data) => {
@@ -35,9 +37,6 @@ const CartProvider = ({ children }) => {
             setCart([...cart, { ...data, amount: 1 }]);
         }
 
-        setItemsAmount(cart.length);
-        setAmount(amount + data.attributes.price);
-        setTotal(total + data.attributes.price);
         setIsOpen(true);
     };
 
