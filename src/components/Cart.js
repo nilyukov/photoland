@@ -2,9 +2,27 @@ import { IoArrowForward, IoCartOutline, IoClose } from 'react-icons/io5';
 import { useContext } from 'react';
 import { CartContext } from '../context/CartContext';
 import CartItem from './CartItem';
+import { loadStripe } from '@stripe/stripe-js';
+import { request } from '../request';
 
 const Cart = () => {
     const { setIsOpen, cart, total, clearCart } = useContext(CartContext);
+
+    const stripePromise = loadStripe(`${process.env.REACT_APP_PUBLIC_STRIPE_KEY}`);
+
+    const handlePayment = async () => {
+        try {
+            const stripe = await stripePromise;
+            const res = await request.post('/orders', { cart });
+
+            const result = await stripe.redirectToCheckout({
+                sessionId: res.data.stripeSession.id
+            });
+            console.log(result);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <div className="w-full h-full px-4 text-white">
@@ -41,6 +59,7 @@ const Cart = () => {
                                 clear cart
                             </button>
                             <button
+                                onClick={handlePayment}
                                 type={'button'}
                                 className="btn btn-accent hover:bg-accent-hover text-primary flex-1 px-2 gap-x-2">
                                 Checkout
